@@ -1,0 +1,34 @@
+{% extends "Padre.html" %}
+{% load static %}
+
+{% block Titulos_iniciales %}
+<span class="site-heading-upper text-primary mb-3">PYTHON BASICOe</span>
+<span class="site-heading-lower">BLOG DE NORWYS LEON</span>
+{% endblock %}
+
+{% block imagen %}
+    <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'assets/img/intro1.jpg' %}" alt="..." />
+{% endblock %}
+
+
+{% block Titulos_texto %}
+<h2 class="section-heading mb-4">
+    <h3> {{ mensaje }}</h3>
+    <span class="section-heading-upper">Home de la pagina</span>
+    <span class="section-heading-lower">Este es el tiyulo de la pagina </span>
+    <p class="mb-3">Este es el texto o parrafo de la pagina inciaila</p>
+    <div class="intro-button mx-auto"><a class="btn btn-primary btn-xl" href="#!">Mensajeria</a></div>
+</h2>
+{% endblock %}
+
+{% block Titulos_parrofofinalpagina %}
+<h2 class="section-heading mb-4">
+    <span class="section-heading-upper">Saber mas sobre-....</span>
+    <span class="section-heading-lower">ti</span>
+</h2>
+<p class="mb-0">Parrado final </p>
+{% endblock %}
+
+{% block Autor_fecha %}
+    <div class="container"><p class="m-0 small">Autor: Norwys León - Fecha: Enero 2022</p></div>
+{% endblock %}
