@@ -1,17 +1,33 @@
 from django.shortcuts import render
-from .models import Usuario
+from .models import Usuario, Avatar
 from django.http import HttpResponse
+from django.urls import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
-from .forms import RegistroUsuarioForm
- 
+from .forms import RegistroUsuarioForm, EditUsuarioForm, AvatarForm
+
+from django.contrib.auth.decorators import login_required  #para vistas basadas en funciones def
+from django.contrib.auth.mixins import LoginRequiredMixin #para vistas basadas en class
+
+
 # Create your views here.
+
+def obtenerAvatar(request):
+    lista=Avatar.objects.filter(user=request.user)
+    if len (lista)!=0:
+        avatar=lista[0].imagen.url
+    else:
+        avatar="/media/avatars/Pordefecto.png"
+    return avatar
+
 def inicio(request):
     return render(request, "Home.html")
 
+@login_required
 def acerca_de_mi(request):
     return render(request, "acerca_de_mi.html")
 
+@login_required
 def crearusuario(requets):
     usuario= Usuario(nombre="Norwys", email="norwysleon@gmail.com", contrasena="12345")
     usuario.save()
@@ -41,7 +57,7 @@ def login_usuario(request):
             usuario=authenticate(username=usu, password=contraseña)
             if usuario is not None:
                 login(request, usuario)
-                return render (request, "loginexitoso.html", {"mensaje":f"Usuario {usu} logueado correctamemte"})
+                return render (request, "loginexitoso.html", {"mensaje":f"Usuario {usu} logueado correctamemte", "avatar": obtenerAvatar(request)})
             else:
                 return render(request, "login.html", {"form": form, "mensaje": "Usuario y/o contraseña incorrectos"})
         else:
@@ -50,3 +66,39 @@ def login_usuario(request):
     else:
         form=AuthenticationForm()
         return render (request,"login.html", {"form": form})
+
+@login_required
+def editarPerfil(request):
+    usuario=request.user
+    if request.method=="POST":
+        form=EditUsuarioForm(request.POST)
+        if form.is_valid():
+            info=form.cleaned_data
+            usuario.email=info["email"]
+            usuario.password1=info["password1"]
+            usuario.password2=info["password2"]
+            usuario.first_name=["first_name"]
+            usuario.last_name=["last_name"]
+            usuario.save()
+            return render(request, "editarPerfilExitoso.html", {"mensaje": f"Usuario {usuario.username} editado correctamente", "avatar": obtenerAvatar(request)})
+        else:
+            return render (request, "editarPerfil.html", {"form": form, "nombreusuario": usuario.username})
+    else:
+        form=EditUsuarioForm(instance=usuario)
+        return render (request, "editarPerfil.html", {"form": form, "nombreusuario": usuario.username})
+
+def agregarAvatar(request):
+    if request.method=="POST":
+        form=AvatarForm(request.POST, request.FILES)
+        if form.is_valid():
+            avatar=Avatar(user=request.user, imagen=request.FILES["imagen"])
+            avatarViejo=Avatar.objects.filter(user=request.user)
+            if len(avatarViejo)>0:
+                avatarViejo[0].delete()
+            avatar.save()
+            return render(request, "AppCoder/Home.html", {"mensaje":f"Avatar agregado correctamente"})
+        else:
+            return render(request, "AppCoder/agregarAvatar.html", {"form": form, "usuario": request.user, "mensaje":"Error al agregar el avatar"})
+    else:
+        form=AvatarForm()
+        return render(request, "AppCoder/agregarAvatar.html", {"form": form, "usuario": request.user})

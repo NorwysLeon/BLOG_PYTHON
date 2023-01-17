@@ -2,21 +2,26 @@
 {% load static %}
 
 {% block Titulos_iniciales %}
-<span class="site-heading-upper text-primary mb-3">PYTHON BASICO</span>
-<span class="site-heading-lower">BLOG DE NORWYS LEON</span>
+<span class="site-heading-upper text-primary mb-3">BLOG - CAFÉ</span>
+<span class="site-heading-lower">AGREGAR AVATAR {{ nombreusuario }}</span>
 {% endblock %}
 
 {% block imagen %}
-    <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'assets/img/intro1.jpg' %}" alt="..." />
+    <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'assets/img/registro.jpg' %}" alt="..." />
 {% endblock %}
 
 
 {% block Titulos_texto %}
 <h2 class="section-heading mb-4">
-    <span class="section-heading-upper">Home de la pagina</span>
-    <span class="section-heading-lower">Este es el tiyulo de la pagina del centro </span>
-    <p class="mb-3">Este es el texto o parrafo de la pagina inciaila</p>
-    <div class="intro-button mx-auto"><a class="btn btn-primary btn-xl" href="#!">Mensajeria</a></div>
+    <h3> {{ mensaje }}</h3>
+
+    <form action="{% url 'agregarAvatar' %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="AGREGAR AVATAR">
+    </form>
+    {{ mensaje }}
 </h2>
 {% endblock %}
 

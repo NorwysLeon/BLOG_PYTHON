@@ -8,6 +8,9 @@ urlpatterns = [
     path('acercademi/', acerca_de_mi, name="acerca_de_mi"),
     path('register/', register, name="register"),
     path('login/', login_usuario, name="login"),
+    path('logout/', LogoutView.as_view() , name="logout"),
+    path('editarPerfil/', editarPerfil, name="editarPerfil"),
+    #path('agregarAvatar/', agregarAvatar, name="agregarAvatar"),
 
    
 

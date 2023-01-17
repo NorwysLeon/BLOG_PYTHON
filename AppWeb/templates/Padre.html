@@ -35,12 +35,20 @@
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'inicio' %}">HOGAR</a></li>
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'acerca_de_mi' %}">ACERCA DE MI</a></li>
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="products.html">BLOGS</a></li>
+                        
+                        {% if user.is_authenticated %}
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'logout' %}">CERRAR SESIÓN</a></li>
+                        <img src="{{ avatar }} alt="">
+
+                        {% else  %}
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'register' %}">REGISTRO</a></li>
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'login' %}">ACCESO</a></li>
                         
+                        {% endif %}  
+                                         
                     </ul>
                 </div>
-            </div>
+            </div> 
         </nav>
         <section class="page-section clearfix">
             <div class="container">
