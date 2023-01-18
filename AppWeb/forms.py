@@ -26,6 +26,16 @@ class EditUsuarioForm(UserCreationForm):
         fields= ["email", "password1", "password2", "first_name", "last_name"]
         help_texts= {k:"" for k in fields}
 
+class crearBlog(forms.Form):
+    titulo=forms.CharField(label= "T´tulo", max_length=50)
+    subtitulo=forms.CharField(label= "Subtítulo", max_length=50)
+    cuerpo=forms.CharField(label="Cuerpo", max_length=500)
+    autor=forms.CharField(label="Autor", max_length=50)
+    fecha=forms.DateField(label="Fecha")
+    imagen=forms.ImageField(label="Imagen")
+
+
+
 class AvatarForm(forms.Form):
     imagen=forms.ImageField(label="Imagen")
     

@@ -34,7 +34,7 @@
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'inicio' %}">HOGAR</a></li>
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'acerca_de_mi' %}">ACERCA DE MI</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="products.html">BLOGS</a></li>
+                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'acerca_de_mi' %}">BLOGS</a></li>
                         
                         {% if user.is_authenticated %}
                         <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'logout' %}">CERRAR SESIÓN</a></li>
