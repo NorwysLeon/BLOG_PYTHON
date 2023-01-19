@@ -3,7 +3,7 @@
 
 {% block Titulos_iniciales %}
 <span class="site-heading-upper text-primary mb-3">BLOG - CAFÉ</span>
-<span class="site-heading-lower">CREAR NUEVO ARTICULO {{ nombreusuario }}</span>
+<span class="site-heading-lower">MOSTRANDO DATOS DE {{ nombreusuario }}</span>
 {% endblock %}
 
 {% block imagen %}
@@ -15,14 +15,10 @@
 <h2 class="section-heading mb-4">
     <h3> {{ mensaje }}</h3>
 
-    <form action="{% url 'formBlog' %}" method="POST"> {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-           
-        </table>
-        <input type="submit" value="CREAR ARTICULO">
-    </form>
-   
+    <form action="{% url 'buscar' %}" method="GET" enctype="multipart/form-data"> {% csrf_token %}
+        
+        <input type="text" name="nombre" id="nombre" placeholder="INSERTE NOMBRE">
+        <input type="submit" value="Buscar Usuario">
 </h2>
 {% endblock %}
 

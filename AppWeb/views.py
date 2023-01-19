@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Usuario, Avatar, Blog
+from .models import Usuario, Avatar, Blog, Profile
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -41,17 +41,18 @@ def formBlog(request):
             titulo=informacion["titulo"]
             subtitulo=informacion["subtitulo"]
             cuerpo=informacion["cuerpo"]
-            autor=informacion["autor"]
-            fecha=informacion["fecha"]
-            imagen=informacion["imagen"]
-            blog= Blog(titulo=titulo, subtitulo=subtitulo, cuerpo=cuerpo, autor=autor, fecha=fecha, imagen=imagen)
+            #autor=informacion["autor"]
+            #fecha=informacion["fecha"]
+            #imagen=informacion["imagen"]
+            blog = Blog(titulo=titulo, subtitulo=subtitulo, cuerpo=cuerpo)
             blog.save()
-            return render (request, "Home.html", {"mensaje": "Blog creado correctamente", "avatar": obtenerAvatar(request)})
+            blogues=Blog.objects.all()
+            return render (request, "crearblog.html", {"blogues":blogues, "mensaje": "Blog creado correctamente"})
         else:
-            return render(request, "formBlog.html", {"form": form, "avatar": obtenerAvatar(request)})
+            return render(request, "formBlog.html", {"form": form, "mensaje": "Informacion no valida"})
     else:
         formulario=crearBlog()
-        return render (request, "formBlog.html", {"form": formulario, "avatar": obtenerAvatar(request)})
+        return render (request, "formBlog.html", {"form": formulario})
 
 
 
@@ -95,6 +96,18 @@ def login_usuario(request):
         form=AuthenticationForm()
         return render (request,"login.html", {"form": form})
 
+def busqueda(request):
+    return render (request, "busqueda.html")
+
+def buscar(request):
+    nombre=request.GET["nombre"]
+    if nombre!="":
+        profile=Profile.objects.filter(nombre__icontains=nombre)
+        return render(request, "busqueda.html", {"profile":profile})
+    else:
+        return render(request, "buscar.html", {"mensaje": "Ingresa un nombre para buscar"})
+
+
 @login_required
 def editarPerfil(request):
     usuario=request.user
@@ -102,11 +115,13 @@ def editarPerfil(request):
         form=EditUsuarioForm(request.POST)
         if form.is_valid():
             info=form.cleaned_data
+            usuario.nombre=["nombre"]
+            usuario.imagen=["imagen"]
+            usuario.descripcion=["descripcion"]
+            usuario.web=["web"]
             usuario.email=info["email"]
             usuario.password1=info["password1"]
             usuario.password2=info["password2"]
-            usuario.first_name=["first_name"]
-            usuario.last_name=["last_name"]
             usuario.save()
             return render(request, "editarPerfilExitoso.html", {"mensaje": f"Usuario {usuario.username} editado correctamente", "avatar": obtenerAvatar(request)})
         else:
@@ -130,5 +145,17 @@ def agregarAvatar(request):
     else:
         form=AvatarForm()
         return render(request, "AppCoder/agregarAvatar.html", {"form": form, "usuario": request.user})
+
+def leerblog(request):
+    blogues=Blog.objects.all()
+    return render (request, "crearblog.html", {"blogues":blogues})
+
+def eliminarblog(request, id):
+    blog=Blog.objects.get(id=id)
+    print(blog)
+    blog.delete()
+    blogues=Blog.objects.all()
+    return render(request, "crearblog.html", {"blogues":blogues, "mensaje": "Blog borrado exitosamente"})
+
 
 

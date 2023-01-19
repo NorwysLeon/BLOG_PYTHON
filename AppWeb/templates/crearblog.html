@@ -1,0 +1,44 @@
+{% extends "Padre.html" %}
+{% load static %}
+
+{% block Titulos_iniciales %}
+<span class="site-heading-upper text-primary mb-3">PYTHON BASICO</span>
+<span class="site-heading-lower">BLOG DE NORWYS LEON</span>
+{% endblock %}
+
+{% block imagen %}
+    <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'assets/img/intro1.jpg' %}" alt="..." />
+{% endblock %}
+
+
+{% block Titulos_texto %}
+<ul>
+    <h1>BLOGS</h1>
+
+    {% for blog in blogues %}
+    <li>{{ blog.titulo }} {{ blog.subtitulo }} - {{ blog.cuerpo }}
+       
+    </li>
+    <a class="btn btn-danger" href="{% url 'eliminarblog'  blog.id  %}">Eliminar </a>
+    <a class="btn btn-success" href="{% url 'editarblog'  blog.id  %}">Editar</a>
+    
+    {% endfor %}
+
+
+</ul>
+<h2>{{ mensaje }}</h2>
+<a class="btn btn-primary" href="{% url 'formBlog'  %}">Agregar Blog</a>
+
+{% endblock %}
+
+{% block Titulos_parrofofinalpagina %}
+<h2 class="section-heading mb-4">
+    <span class="section-heading-upper">Saber mas sobre-....</span>
+    <span class="section-heading-lower">ti</span>
+</h2>
+<p class="mb-0">Parrado final </p>
+{% endblock %}
+
+{% block Autor_fecha %}
+    <div class="container"><p class="m-0 small">Autor: Norwys León - Fecha: Enero 2022</p></div>
+{% endblock %}

@@ -3,7 +3,7 @@
 
 {% block Titulos_iniciales %}
 <span class="site-heading-upper text-primary mb-3">BLOG - CAFÉ</span>
-<span class="site-heading-lower">CREAR NUEVO ARTICULO {{ nombreusuario }}</span>
+<span class="site-heading-lower">RESULTADO DE LA BUSQUEDA {{ nombreusuario }}</span>
 {% endblock %}
 
 {% block imagen %}
@@ -15,15 +15,16 @@
 <h2 class="section-heading mb-4">
     <h3> {{ mensaje }}</h3>
 
-    <form action="{% url 'formBlog' %}" method="POST"> {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-           
-        </table>
-        <input type="submit" value="CREAR ARTICULO">
-    </form>
-   
-</h2>
+    {% if profile %}
+        <h2>LISTADO DE NOMBRES</h2>
+        {% for profile in profiles %}
+        <h3>{{ profile.nombre }} - {{ profile.email }} - 
+            {{ profile.descripcion }} - {{ profile.web }}</h3>
+        {% endfor %}
+    {% else %}
+        <h2>NO HAY USUARIO CON ESE NOMBRE</h2>
+    {% endif %}   
+        </h2>
 {% endblock %}
 
 {% block Titulos_parrofofinalpagina %}
